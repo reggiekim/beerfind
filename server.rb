@@ -9,41 +9,46 @@ module Sinatra
       if data['data'] == nil
         return false
       else
-        result = data['data'][0]
-        myBeerName = result['name']
+        resultsArr = data['data'][0..5]
+        beersArray = []
 
-        if result['labels']
-          myBeerLabel = result['labels']['large']
-        else
-          myBeerLabel = "/img/no_image.jpg"
+        resultsArr.each do |result|
+          myBeerName = result['name']
+
+          if result['labels']
+            myBeerLabel = result['labels']['large']
+          else
+            myBeerLabel = "/img/no_image.jpg"
+          end
+
+          if result['abv']
+            myBeerAbv = result['abv']+"%"
+          else
+            myBeerAbv = "Sorry, no ABV info yet!"
+          end
+
+          if result['description']
+            myBeerDesc = result['description']
+          else
+            myBeerDesc = "Aww man, no description for "+myBeerName
+          end
+
+          if result['style']
+            styleName = result['style']['name']
+          else
+            styleName = "Sorry, we're not sure what style this beer is"
+          end
+
+          if result['style']
+            styleInfo = result['style']['description']
+          else
+            styleInfo = "Sorry, no additional information about this style of beer"
+          end
+
+          myBeer = {name: myBeerName, label: myBeerLabel, abv: myBeerAbv, description: myBeerDesc, style: styleName, styleInfo: styleInfo}
+          beersArray.push(myBeer)
         end
-
-        if result['abv']
-          myBeerAbv = result['abv']+"%"
-        else
-          myBeerAbv = "Sorry, no ABV info yet!"
-        end
-
-        if result['description']
-          myBeerDesc = result['description']
-        else
-          myBeerDesc = "Aww man, no description for "+myBeerName
-        end
-
-        if result['style']
-          styleName = result['style']['name']
-        else
-          styleName = "Sorry, we're not sure what style this beer is"
-        end
-
-        if result['style']
-          styleInfo = result['style']['description']
-        else
-          styleInfo = "Sorry, no additional information about this style of beer"
-        end
-
-        myBeer = {name: myBeerName, label: myBeerLabel, abv: myBeerAbv, description: myBeerDesc, style: styleName, styleInfo: styleInfo}
-        return myBeer
+        return beersArray
       end
 
     end
@@ -55,7 +60,7 @@ module Sinatra
     get "/search" do
       beerSearch = params[:beer]
       query = beerSearch.gsub(/\s+/, '+')
-      @beer = getBeer(query)
+      @beers = getBeer(query)
       erb :search
     end
 

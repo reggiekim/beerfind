@@ -3,6 +3,10 @@ nav .brand-logo{
   color: #ffa000;
 }
 
+#search-header {
+  color: white;
+}
+
 .row.intro {
   background-image: url('/img/cover.jpg');
   background-size: cover;
@@ -17,4 +21,8 @@ nav .brand-logo{
 
 #searchbox {
   font-size: 3em;
+}
+
+#no-beer {
+  height: 200px;
 }
