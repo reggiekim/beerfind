@@ -13,7 +13,7 @@ module Sinatra
         myBeerName = result['name']
 
         if result['labels']
-          myBeerLabel = result['labels']['medium']
+          myBeerLabel = result['labels']['large']
         else
           myBeerLabel = "/img/no_image.jpg"
         end

@@ -1,0 +1,20 @@
+nav .brand-logo{
+  font-weight: bold;
+  color: #ffa000;
+}
+
+.row.intro {
+  background-image: url('/img/cover.jpg');
+  background-size: cover;
+}
+
+#welcome-text {
+  padding-top: 150px;
+  padding-bottom: 150px;
+  position: relative;
+  color: white;
+}
+
+#searchbox {
+  font-size: 3em;
+}
