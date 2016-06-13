@@ -3,23 +3,60 @@ module Sinatra
 
     def getBeer(beerName)
       key = ENV['BREWERYDB_KEY']
-      # beerName = "stella+artois"
-      url = 'http://api.brewerydb.com/v2/search?q='+beerName+'&format=json&type=beer&key='+key
-      # url = 'http://api.brewerydb.com/v2/search?q=stella+artois&format=json&type=beer&key=210ad75e065422c7930f7b65df4d1bd1'
+      url = 'http://api.brewerydb.com/v2/search?q='+beerName+'&type=beer&key='+key
       data = HTTParty.get(url)
-      @results = data['data']
-      binding.pry
+      # binding.pry
+      if data['data'] == nil
+        return false
+      else
+        result = data['data'][0]
+        myBeerName = result['name']
 
+        if result['labels']
+          myBeerLabel = result['labels']['medium']
+        else
+          myBeerLabel = "/img/no_image.jpg"
+        end
+
+        if result['abv']
+          myBeerAbv = result['abv']+"%"
+        else
+          myBeerAbv = "Sorry, no ABV info yet!"
+        end
+
+        if result['description']
+          myBeerDesc = result['description']
+        else
+          myBeerDesc = "Aww man, no description for "+myBeerName
+        end
+
+        if result['style']
+          styleName = result['style']['name']
+        else
+          styleName = "Sorry, we're not sure what style this beer is"
+        end
+
+        if result['style']
+          styleInfo = result['style']['description']
+        else
+          styleInfo = "Sorry, no additional information about this style of beer"
+        end
+
+        myBeer = {name: myBeerName, label: myBeerLabel, abv: myBeerAbv, description: myBeerDesc, style: styleName, styleInfo: styleInfo}
+        return myBeer
+      end
 
     end
 
     get "/" do
-      @beer = getBeer("stella+artois")
       erb :index
     end
 
-    get "/new" do
-      @beer = getBeer
+    get "/search" do
+      beerSearch = params[:beer]
+      query = beerSearch.gsub(/\s+/, '+')
+      @beer = getBeer(query)
+      erb :search
     end
 
 

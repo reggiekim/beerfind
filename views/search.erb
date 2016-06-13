@@ -1,0 +1,21 @@
+<form action='/search' method='GET'>
+  <input placeholder="Enter Beer" type="text" name="beer" />
+  <button id="beer-search">Submit</button>
+</form>
+
+<% if @beer %>
+  <div>
+    <div>
+      <img src="<%= @beer[:label] %>" />
+      <p><%= @beer[:name] %></p>
+    </div>
+    <p>Beer Type: <%= @beer[:style] %></p>
+    <p>ABV: <%= @beer[:abv] %></p>
+    <p>Description: <%= @beer[:description] %></p>
+    <p>Type Info: <%= @beer[:styleInfo] %></p>
+  </div>
+<% else %>
+  <div>
+    <p>Sorry we don't have this beer in our database.</p>
+  </div>
+<% end %>
